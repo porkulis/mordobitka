@@ -1,11 +1,12 @@
 import random
 import time
+import os
+clear = lambda: os.system('cls')
 
 def roll(min, max):
      result = random.randint(min, max)
      return result
      
-
 class Character:
     def __init__ (self, name_m, name_d, race, strenght, agility, condition, max_hp, current_hp, experience_points):
         self.name_m = name_m
@@ -19,35 +20,67 @@ class Character:
         self.experience_points = experience_points
 
     def przedstaw(self):
-            print(f"-Imię: {self.name_m}, Życie: {self.current_hp}/{self.max_hp}")
+            print(f"Imię: {self.name_m}, Życie: {self.current_hp}/{self.max_hp}")
 
     def attack(self, attacked):
-         print(f"\n{self.name_m} atakuje {attacked.name_d}!")
-         time.sleep(2)
-         #szansa na unik
-         attack_speed = self.agility + roll(1,6)
-         avoid_chance = attacked.agility + roll(1,4)
-         if attack_speed > avoid_chance:
+        clear()
+        print(f"{self.name_m} atakuje {attacked.name_d}!\n\n")
+        print_hp(a, b)
+        time.sleep(2)
+        #szansa na unik
+        attack_roll = roll(1,9)
+        attack_speed = self.agility + attack_roll + 5
+        defend_roll = roll(1,9)
+        avoid_chance = attacked.agility + defend_roll
+        if attack_roll > 6:
+            attack_description = "błyskawiczny"
+        elif attack_roll > 3:
+            attack_description = "standardowy"
+        else:
+            attack_description = "powolny"
+        clear()
+        print(f"{self.name_m} atakuje {attacked.name_d}!")
+        print(f"{self.name_m} wyprowadza {attack_description} atak.\n")
+        print_hp(a, b)
+        time.sleep(2)
+        if attack_speed > avoid_chance:
             #szansa na blok
-            attack_chance = self.strenght + self.agility + roll(1,6)
-            block_chance = attacked.strenght + attacked.agility + roll(1,4)
+            attack_chance = self.strenght + self.agility + attack_roll + 5
+            block_chance = attacked.strenght + attacked.agility + defend_roll
             if attack_chance > block_chance:
-                damage = self.strenght + roll(2, 4)
+                damage = int((2 * roll(2, 4)) * (self.strenght/10))
                 attacked.current_hp -= damage
-                print(f"--{self.name_m} trafia {attacked.name_d} zadając {damage} pkt. obrażeń")
+                clear()
+                print(f"{self.name_m} atakuje {attacked.name_d}!")
+                print(f"{self.name_m} wyprowadza {attack_description} atak.")
+                print(f"{self.name_m} trafia {attacked.name_d} zadając {damage} pkt. obrażeń")
+                print_hp(a, b)
                 time.sleep(2)
-                print(f"--{self.name_m}: {self.current_hp}/{self.max_hp} pkt życia\n--{attacked.name_m}: {attacked.current_hp}/{attacked.max_hp} pkt życia")
             else:
-                 print(f"--BLOK ({attack_chance}/{block_chance})")
-         else:
-              print(f"--UNIK ({attack_speed}/{avoid_chance})")
+                clear()
+                print(f"{self.name_m} atakuje {attacked.name_d}!")
+                print(f"{self.name_m} wyprowadza {attack_description} atak.")
+                print(f"BLOK ({attack_chance} vs {block_chance})")
+                print_hp(a, b)
+                time.sleep(2)
+        else:
+            clear()
+            print(f"{self.name_m} atakuje {attacked.name_d}!")
+            print(f"{self.name_m} wyprowadza {attack_description} atak.")
+            print(f"UNIK ({attack_speed} vs {avoid_chance})")
+            print_hp(a, b)
+            time.sleep(2)
+        clear()
+        print(f"\n\n")
+        print_hp(a, b)
 
-
-player = Character("Mruczek", "Mruczka", "kot", 18, 12, 20, 30, 30, 0)
-enemy = Character("Burek", "Burka", "pies", 16, 15, 20, 30, 30, 0)
+#strenght, agility, condition, max_hp, current_hp, experience_points
+player = Character("Mruczek", "Mruczka", "kot", 15, 15, 20, 50, 50, 0)
+enemy = Character("Burek", "Burka", "pies", 15, 15, 20, 12, 12, 0)
 enemy1 = Character("Ślimior", "Ślimiora", "ślimak", 10, 1, 1, 30, 30, 0)
+enemy2 = Character("Goblin", "Goblina", "goblin", 15, 15, 20, 12, 12, 0)
 
-attacked = enemy
+
 
 
 def fight(attacker, defender):
@@ -56,27 +89,32 @@ def fight(attacker, defender):
         attacker.attack(defender)
         if defender.current_hp < 1:
             time.sleep(2)
-            print("Zwyciestwo")
+            clear()
+            print(f"{defender.name_m} pada na ziemię brocząc krwią.\n\n")
+            print_hp(a, b)
+            time.sleep(2)
+            clear()
+            print(f"Zwyciestwo!\n\n")
+            print_hp(a, b)
             break
         time.sleep(2)
         defender.attack(attacker)
         if attacker.current_hp < 1:
             time.sleep(2)
-            print("Porażka")
+            clear()
+            print("\nPorażka")
             break
 
-player.przedstaw()
-enemy.przedstaw()
-fight(player, enemy)
+def print_hp(a, b):
+    print(f'''
+________________________________________________
+{a.name_m}: [{a.current_hp}] HP vs {b.name_m} [{b.current_hp}] HP
+    ''')
 
-answer = input("Czy chcesz zażyć miksturę życia? (tak/nie)")
-if answer == "tak":
-    print("Ozdrowienie!")
-    player.current_hp = player.max_hp
+a=player
 
-player.przedstaw()
-enemy1.przedstaw()
-fight(player, enemy1)
-
-
+def set_fight(opponent):
+    global b
+    b = opponent
+    fight(a, b)
 

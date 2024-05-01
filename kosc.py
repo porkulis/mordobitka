@@ -18,3 +18,4 @@ def kosc():
     print(rzut)
 
 kosc()
+

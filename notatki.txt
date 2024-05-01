@@ -1,1 +1,7 @@
 Dodac czyszczenie ekranu przy kazdym wyswietleniu ze stalym paskiem statystyk, ekwipunku gracza na dole strony. dobranoc pchly na noc
+
+
+print('''
+______________________________________________
+Burek: pkt. życia: 17  Mruczek: pkt. życia: 75
+''')
