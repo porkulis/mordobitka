@@ -1,7 +1,16 @@
 from character import *
 
-set_fight(enemy3)
+player.przedstaw()
+player.equip_weapon(promien)
+time.sleep(3)
+set_fight(burek)
+clear()
 
-set_fight(enemy1)
+#player.equip_weapon(miecz)
+time.sleep(3)
+player.equip_armor(zbroja)
 
-set_fight(enemy3)
+player.przedstaw()
+
+time.sleep(3)
+set_fight(behemot)
