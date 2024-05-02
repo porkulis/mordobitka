@@ -24,7 +24,7 @@ class Character:
 
     def attack(self, attacked):
         clear()
-        print(f"{self.name_m} atakuje {attacked.name_d}!\n\n")
+        print(f"{self.name_m} atakuje {attacked.name_d}.\n\n")
         print_hp(a, b)
         time.sleep(2)
         #szansa na unik
@@ -39,8 +39,8 @@ class Character:
         else:
             attack_description = "powolny"
         clear()
-        print(f"{self.name_m} atakuje {attacked.name_d}!")
-        print(f"{self.name_m} wyprowadza {attack_description} atak.\n")
+        print(f"{self.name_m} atakuje {attacked.name_d}.")
+        print(f"{self.name_m} wyprowadza {attack_description} atak!\n")
         print_hp(a, b)
         time.sleep(2)
         if attack_speed > avoid_chance:
@@ -51,22 +51,22 @@ class Character:
                 damage = int((2 * roll(2, 4)) * (self.strenght/10))
                 attacked.current_hp -= damage
                 clear()
-                print(f"{self.name_m} atakuje {attacked.name_d}!")
-                print(f"{self.name_m} wyprowadza {attack_description} atak.")
+                print(f"{self.name_m} atakuje {attacked.name_d}.")
+                print(f"{self.name_m} wyprowadza {attack_description} atak!")
                 print(f"{self.name_m} trafia {attacked.name_d} zadając {damage} pkt. obrażeń")
                 print_hp(a, b)
                 time.sleep(2)
             else:
                 clear()
-                print(f"{self.name_m} atakuje {attacked.name_d}!")
-                print(f"{self.name_m} wyprowadza {attack_description} atak.")
+                print(f"{self.name_m} atakuje {attacked.name_d}.")
+                print(f"{self.name_m} wyprowadza {attack_description} atak!")
                 print(f"BLOK ({attack_chance} vs {block_chance})")
                 print_hp(a, b)
                 time.sleep(2)
         else:
             clear()
-            print(f"{self.name_m} atakuje {attacked.name_d}!")
-            print(f"{self.name_m} wyprowadza {attack_description} atak.")
+            print(f"{self.name_m} atakuje {attacked.name_d}.")
+            print(f"{self.name_m} wyprowadza {attack_description} atak!")
             print(f"UNIK ({attack_speed} vs {avoid_chance})")
             print_hp(a, b)
             time.sleep(2)
@@ -79,6 +79,7 @@ player = Character("Mruczek", "Mruczka", "kot", 15, 15, 20, 50, 50, 0)
 enemy = Character("Burek", "Burka", "pies", 15, 15, 20, 12, 12, 0)
 enemy1 = Character("Ślimior", "Ślimiora", "ślimak", 10, 1, 1, 30, 30, 0)
 enemy2 = Character("Goblin", "Goblina", "goblin", 15, 15, 20, 12, 12, 0)
+enemy3 = Character("Behemot", "Behemota", "behemot", 30, 30, 20, 100, 100, 0)
 
 
 
@@ -100,9 +101,12 @@ def fight(attacker, defender):
         time.sleep(2)
         defender.attack(attacker)
         if attacker.current_hp < 1:
+            clear()
+            print(f"{attacker.name_m} pada na ziemię brocząc krwią.\n\n")
+            print_hp(a, b)
             time.sleep(2)
             clear()
-            print("\nPorażka")
+            print(f"Porażka!\n\n")
             break
 
 def print_hp(a, b):
